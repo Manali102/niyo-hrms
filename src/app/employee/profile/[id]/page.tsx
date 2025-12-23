@@ -33,8 +33,8 @@ export default async function TeamMemberProfilePage({ params }: PageProps) {
   let hierarchyId = employee._id;
   
   if (employee.managerId) {
-    if (typeof employee.managerId === 'object' && '_id' in (employee.managerId as any)) {
-      hierarchyId = (employee.managerId as any)._id;
+    if (typeof employee.managerId === 'object' && employee.managerId !== null && '_id' in employee.managerId) {
+      hierarchyId = (employee.managerId as { _id: string })._id;
     } else if (typeof employee.managerId === 'string') {
       hierarchyId = employee.managerId;
     }

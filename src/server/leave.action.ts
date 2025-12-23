@@ -264,9 +264,9 @@ export async function listLeaveRequests(params?: ListLeaveRequestsParams): Promi
 
     // Return the nested list (try multiple common keys)
     const listData = response.data.data;
-    // @ts-ignore - checking multiple possible keys dynamically
+    // @ts-expect-error - checking multiple possible keys dynamically
     const list = listData?.leaveRequestList || listData?.leaveRequests || listData?.leave_requests || listData?.requests || [];
-    // @ts-ignore - trying to find total count if available
+    // @ts-expect-error - trying to find total count if available
     const total = listData?.total || listData?.totalCount || listData?.total_count || 0;
     
     return { ok: true, data: { list, total } };

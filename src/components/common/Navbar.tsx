@@ -98,7 +98,6 @@ const Navbar = ({ role }: { role?: string }) => {
   // 🩹 Wait for mount to prevent SSR hydration mismatches (especially from ThemeToggle)
   if (!mounted) return null;
 
-  const isAdmin = role === "admin";
   const isEmployee = role === "employee";
 
   return (

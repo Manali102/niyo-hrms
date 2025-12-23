@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,7 @@ const EmployeeList = () => {
   const [limit] = useState(10);
   const [total, setTotal] = useState(0);
 
-  const fetchEmployees = async () => {
+  const fetchEmployees = useCallback(async () => {
     setIsLoading(true);
     try {
       const result = await getEmployeeList({ page, limit });
@@ -58,11 +58,11 @@ const EmployeeList = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [page, limit]);
 
   useEffect(() => {
     fetchEmployees();
-  }, [page, limit]);
+  }, [fetchEmployees]);
 
   const handleAddSuccess = () => {
     fetchEmployees();
@@ -80,7 +80,7 @@ const EmployeeList = () => {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Employees</h1>
           <p className="text-sm text-gray-500">
-            Manage your organization's employees
+            Manage your organization&apos;s employees
           </p>
         </div>
         <Button onClick={() => setIsAddModalOpen(true)}>

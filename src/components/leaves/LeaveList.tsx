@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,7 @@ import {
 } from "@/server/leave.action";
 import { LeaveRequest, LeaveRequestStatus } from "@/types/leave.types";
 import { format } from "date-fns";
-import { Trash2, Filter, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { Trash2, Filter, ChevronLeft, ChevronRight } from "lucide-react";
 
 type LeaveListProps = {
     refreshTrigger?: number;
@@ -25,7 +25,6 @@ export const LeaveList = ({ refreshTrigger, onDeleteSuccess }: LeaveListProps) =
   
   // Filters State
   const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
   const [status, setStatus] = useState<string>("");
   const [search, setSearch] = useState("");
   const [leaveTypeId, setLeaveTypeId] = useState("");
@@ -33,7 +32,13 @@ export const LeaveList = ({ refreshTrigger, onDeleteSuccess }: LeaveListProps) =
   const [endDate, setEndDate] = useState("");
   
   // Data for filters
-  const [leaveTypes, setLeaveTypes] = useState<any[]>([]);
+  const [leaveTypes, setLeaveTypes] = useState<{
+    _id: string;
+    leave_type_name: string;
+    hex_color_code: string;
+    total_leaves: number;
+    utilized_leaves: number;
+  }[]>([]);
 
   // Fetch leave types for dropdown
   useEffect(() => {
@@ -45,7 +50,7 @@ export const LeaveList = ({ refreshTrigger, onDeleteSuccess }: LeaveListProps) =
   }, []);
 
   // Function to refresh list
-  const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
     setLoading(true);
     const params = {
         page,
@@ -60,14 +65,14 @@ export const LeaveList = ({ refreshTrigger, onDeleteSuccess }: LeaveListProps) =
     const res = await listLeaveRequests(params);
     if (res.ok && res.data) {
       setRequests(res.data.list);
-      setTotalCount(res.data.total); // Assuming API returns total now, if not we handle safely
+      // setTotalCount(res.data.total); // Assuming API returns total now, if not we handle safely
     }
     setLoading(false);
-  };
+  }, [page, status, search, leaveTypeId, startDate, endDate]);
 
   useEffect(() => {
     fetchRequests();
-  }, [refreshTrigger, page, status, search, leaveTypeId, startDate, endDate]);
+  }, [fetchRequests, refreshTrigger]);
 
   const handleCancel = async (request: LeaveRequest) => {
     if (!confirm("Are you sure you want to cancel this leave request?")) return;
@@ -153,7 +158,7 @@ export const LeaveList = ({ refreshTrigger, onDeleteSuccess }: LeaveListProps) =
              {/* Filter Button & Popup */}
              <div className="relative" ref={filterRef}>
                  <Button 
-                    variant={hasFilters ? "default" : "outline"} 
+                    variant={hasFilters ? "primary" : "outline"} 
                     className="flex items-center gap-2 h-10"
                     onClick={() => setIsFilterOpen(!isFilterOpen)}
                  >

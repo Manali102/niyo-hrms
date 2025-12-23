@@ -3,7 +3,6 @@ import React from "react";
 import type { PricingPlanProps } from "./types";
 import { usePricingPlan } from "./usePricingPlan";
 import { PlanCard } from "./PlanCard";
-import { PricingHeader } from "./PricingHeader";
 import { PricingSkeleton } from "./PricingSkeleton";
 import { HeaderSection } from "@/components/common/PopupHeader";
 

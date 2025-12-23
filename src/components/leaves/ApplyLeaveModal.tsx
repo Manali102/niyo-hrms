@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { applyLeave, getTotalLeaveBalance } from "@/server/leave.action";
@@ -10,7 +10,13 @@ import { X, Loader2 } from "lucide-react";
 export const ApplyLeaveModal = ({ onSuccess }: { onSuccess?: () => void }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [balances, setBalances] = useState<any[]>([]); 
+  const [balances, setBalances] = useState<{
+    _id: string;
+    leave_type_name: string;
+    hex_color_code: string;
+    total_leaves: number;
+    utilized_leaves: number;
+  }[]>([]); 
   
   // Form State
   const [leaveTypeId, setLeaveTypeId] = useState("");

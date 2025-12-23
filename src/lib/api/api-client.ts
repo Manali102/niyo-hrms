@@ -45,7 +45,7 @@ async function buildHeaders(
 
 async function request<T = unknown>(path: string, options: RequestOptions = {}): Promise<{ ok: boolean; status: number; data?: T; error?: string; details?: unknown; }> {
   const url = buildUrl(path);
-  const { headers, hasAccessToken } = await buildHeaders(options.headers, options.auth);
+  const { headers } = await buildHeaders(options.headers, options.auth);
 
   // On client side, we might not be able to easily check for access token existence if it's in an httpOnly cookie
   // So we skip the pre-check and let the server respond with 401 if needed

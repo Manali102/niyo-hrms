@@ -104,7 +104,7 @@ export const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({
         setIsLoadingEmployees(false);
       }
     },
-    []
+    [isLoadingEmployees]
   );
 
   // Debounce search

@@ -39,7 +39,7 @@ export const EmployeeLeaveRequests: React.FC<EmployeeLeaveRequestsProps> = ({
     [loading, hasMore]
   );
 
-  const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
     setLoading(true);
     // Hardcoded limit as per requirement (or reasonable default)
     const limit = 5; 
@@ -65,11 +65,11 @@ export const EmployeeLeaveRequests: React.FC<EmployeeLeaveRequestsProps> = ({
       console.error(result.error);
     }
     setLoading(false);
-  };
+  }, [employeeId, page]);
 
   useEffect(() => {
     fetchRequests();
-  }, [page]);
+  }, [fetchRequests]);
 
   const handleStatusUpdate = async (
     leaveRequestId: string,

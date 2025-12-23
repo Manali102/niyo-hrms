@@ -4,7 +4,7 @@ import type { SubscriptionPlan } from "@/server/subscription.action";
 /**
  * Format price based on currency and billing cycle
  */
-export const formatPrice = (amount: number, currency: string, billingCycle: BillingCycle): string => {
+export const formatPrice = (amount: number, currency: string, billingCycle?: BillingCycle): string => {
   const symbol = currency === "usd" ? "$" : currency.toUpperCase();
   return `${symbol}${amount}`;
 };
